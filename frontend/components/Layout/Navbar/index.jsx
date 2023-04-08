@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Link from 'next/link';
@@ -6,19 +7,21 @@ import NavLink from './NavLink/';
 import actions from '../../../redux/actions/';
 import { height } from '@mui/system';
 
-import SearchBar from '../../Dashboard/SearchBar';
+import UserProfile from '../../Profile/UserProfile';
+import ProfileIcon from '../../Profile/ProfileIcon';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => !!state.authentication.token);
-  const handleSearch = (value) => {
+  const handleSearch = value => {
     setSearchText(value);
     setShowClearButton(value !== '');
     onSearch(value);
   };
+
   return (
     <>
-      <div className="tabs  is-centered">
+      <div className="tabs is-centered">
         <nav className="navbar">
           <div className="navbar-brand">
             <Link href="/">
@@ -48,15 +51,23 @@ const Navbar = () => {
           <Link href="/upload">
             <a>Upload</a>
           </Link>
-          <section>
-            <SearchBar placeholder="Search" onSearch={handleSearch} />
-
-        </section>
+         
           {isAuthenticated && (
             <li onClick={() => dispatch(actions.deauthenticate())}>
               <a>Log Out</a>
             </li>
           )}
+          {isAuthenticated && (
+            <div
+              style={{
+                position: 'fixed',
+                top: '10px',
+                left: '10px',
+                zIndex: 1000,
+              }}
+            ></div>
+          )}
+          <ProfileIcon />
         </ul>
       </div>
     </>
